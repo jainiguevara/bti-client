@@ -1,17 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import CssBaseline from '@material-ui/core/CssBaseline'
 
 import registerServiceWorker from './registerServiceWorker'
-import AppRouter from './routers/AppRouter'
-import configureStore from './stores/configureStore'
-
+import App from './App'
+import LoginGate from './store/LoginGate'
+import { configureStore } from './store/configureStore'
 
 const store = configureStore()
 
 const AppWrapper = (
   <Provider store={store}>
-    <AppRouter />
+    <LoginGate>
+      <App />
+    </LoginGate>
   </Provider>
 )
 

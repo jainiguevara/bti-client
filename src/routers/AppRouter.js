@@ -1,10 +1,11 @@
 import React from 'react'
-import {BrowserRouter, Route, Switch } from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import '../index.css'
 import App from '../App'
-import Dashboard from '../components/Dashboard'
-import Login from './../components/Login'
+import Dashboard from './../components/dashboard'
+import Login from './../containers/Login'
+import Main from './../containers/Main'
 
 const NotFound = () => {
   return (
@@ -15,14 +16,14 @@ const NotFound = () => {
 }
 
 const AppRouter = () => (
-  <BrowserRouter>
-    <div>
+  <Main>
+    <Router>
       <Switch>
-        <Route path="/" component={Login} exact={true} />
+        <Route path="/" component={Dashboard} exact={true} />
         <Route component={NotFound} />
       </Switch>
-    </div>
-  </BrowserRouter>
+    </Router>
+  </Main>
 )
 
 export default AppRouter
