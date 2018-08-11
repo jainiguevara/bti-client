@@ -2,15 +2,17 @@ import React from 'react'
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import compose from 'lodash/fp/compose'
 import { Button, FormControl, TextField, Input, InputLabel, IconButton, InputAdornment } from '@material-ui/core'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { withStyles } from '@material-ui/core/styles';
 
-import { history } from './../../history'
+import history from './../../history'
+import configureStore from './../../store/configureStore';
 import { submitLogin } from './../../actions/user'
 import { isLoggedIn } from './../../selectors/user'
+
+// const store = configureStore()
 
 const styles = theme => ({
   margin: {
@@ -26,33 +28,21 @@ class LoginForm extends React.Component {
     super(props)
     this.state = {
       email: '',
-      password: '',
-      isLoggedIn: false
+      password: ''
     }
-  }
-  
-  componentDidMount() {
-    //login
-    // request({ 
-    //   url: 'user/login',
-    //   body: {
-    //     email: 'jaini.guevara@gmail.com',
-    //     password: 'pass1234'
-    //   }
-    // }).then(res => {
-    //   this.setState({res})
-    // })
   }
 
   handleSubmit = e => {
-    this.props.dispatch(submitLogin({
+    // add validation handling here
+    submitLogin({
       email: this.state.email,
       password: this.state.password
-    }))
-
-    if (isLoggedIn(this.state)) {
-      history.push('/')
-    }
+    }, this.props.dispatch).then(data => {
+      console.log(data)
+      history.push(`/${data._id}`)
+    }).catch(e => {
+      // do validation error
+    })
   }
 
   handleEmailChange = e => {
@@ -127,7 +117,19 @@ LoginForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = state => {
+  return {
+    user : state.user
+  }
+}
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+    
+//   }
+// }
+
 export default compose(
   withStyles(styles),
-  connect()
+  connect(mapStateToProps)
 )(LoginForm)

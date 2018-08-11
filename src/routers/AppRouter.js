@@ -1,11 +1,11 @@
 import React from 'react'
-import {BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 
-import '../index.css'
-import App from '../App'
+import PrivateRoute from './PrivateRoute'
 import Dashboard from './../components/dashboard'
 import Login from './../containers/Login'
 import Main from './../containers/Main'
+import history from './../history'
 
 const NotFound = () => {
   return (
@@ -16,14 +16,19 @@ const NotFound = () => {
 }
 
 const AppRouter = () => (
-  <Main>
-    <Router>
+  
+    <Router history={history}>
       <Switch>
-        <Route path="/" component={Dashboard} exact={true} />
-        <Route component={NotFound} />
+        <Route path="/login" component={Login} />
+        <Main>
+          <Route component={NotFound} />
+          <PrivateRoute path="/" component={Dashboard} />
+        </Main>
       </Switch>
     </Router>
-  </Main>
+  
 )
+
+
 
 export default AppRouter

@@ -14,6 +14,7 @@ const headerHeight = 64
 
 const styles = theme => ({
   root: {
+
     display: 'flex',
     minHeight: '100vh',
     flexDirection: 'column',
@@ -23,10 +24,6 @@ const styles = theme => ({
   },
   content: {
     flex: 1,
-  },
-  body: {
-    marginTop: headerHeight,
-    marginLeft: 25,
   },
   flex: {
     flex: 1,

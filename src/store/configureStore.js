@@ -1,14 +1,21 @@
 import { createStore, combineReducers } from 'redux'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 
-import userReducer from './../reducers/user'
+import rootReducer from './../reducers'
 
-export const configureStore = () => {
-  const store = createStore(
-    combineReducers({
-      users: userReducer
-    }),
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+ 
+const persistedReducer = persistReducer(
+  persistConfig, 
+  rootReducer
+)
+
+export const store = createStore(persistedReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
-
-  return store
-}
+export const persistor = persistStore(store)

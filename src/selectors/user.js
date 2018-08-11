@@ -1,3 +1,5 @@
-export const isLoggedIn = user => {
-  return user.email !== '' ? true : false //api logic here
+import moment from 'moment'
+
+export const isLoggedIn = ({ exp }) => {
+  return exp !== 0 && exp > moment().unix()
 }

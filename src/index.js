@@ -1,20 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { PersistGate } from 'redux-persist/integration/react'
 
+import './index.css';
 import registerServiceWorker from './registerServiceWorker'
 import App from './App'
-import LoginGate from './store/LoginGate'
-import { configureStore } from './store/configureStore'
-
-const store = configureStore()
+import { store , persistor } from './store/configureStore'
+import Loading from './components/utility/Loading'
 
 const AppWrapper = (
   <Provider store={store}>
-    <LoginGate>
+    <PersistGate loading={<Loading />} persistor={persistor}>
       <App />
-    </LoginGate>
+    </PersistGate>
   </Provider>
 )
 

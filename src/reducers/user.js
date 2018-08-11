@@ -1,16 +1,23 @@
 const initialState = {
-  email: '',
-  //isLoggedIn: false
+  _id: undefined,
+  email: undefined,
+  exp: 0
 }
 
 export default (state = initialState, action) => {
   const user = action.user
   switch (action.type) {
-    case 'SUBMIT_LOGIN':
-      return user
+    case 'LOGIN_SUCCESS':
+      return Object.assign({}, state, user)
+    case 'LOGIN_FAILED':
+      return action.error
     case 'FETCH_USER':
-      return user
+      return Object.assign({}, state, user)
+    case 'FETCH_USER_SUCCESS':
+      return {...user }
+    case 'FETCH_USER_FAILED':
+      return action.error
     default:
-      return state
+      return { ...state }
   }
 }

@@ -1,24 +1,30 @@
-const request = ({ url, body, authorization, method = 'POST' }) => {
+const request = ({ url, body, token = undefined, method = 'POST' }) => {
   const server = process.env.REACT_APP_API_SERVER
+  const serverToken = process.env.REACT_APP_SERVER_TOKEN
   let rawResponse
-  const headers = new Headers({
+  let headers = {
     'Content-Type': 'application/json',
-  })
-
-  if (authorization) {
-    headers.append('Authorization', `Bearer ${authorization.token}`)
+    'Authorization': `Bearer ${serverToken}`
   }
-  
+  if (token) {
+    headers = {
+      ...headers,
+      'x-auth': token
+    }
+  }
   return fetch(`${server}${url}`, {
     method,
     body: JSON.stringify(body),
     cache: 'no-cache',
     mode: 'cors',
-    credentials: 'same-origin',
-    headers,
+    headers
   }).then(response => {
     rawResponse = response
-    return response.json()
+    if (method ===' DELETE') {
+      return response
+    } else {
+      return response.json()
+    }
   }).then(response => {
     if (response) {
       if (rawResponse.status >= 400) {
@@ -28,7 +34,7 @@ const request = ({ url, body, authorization, method = 'POST' }) => {
     }
   }).catch(err => {
     if (err) {
-      return {
+      throw {
         message: 'err::system_error',
         details: err.toString()
       }
@@ -40,8 +46,9 @@ const request = ({ url, body, authorization, method = 'POST' }) => {
           message: 'err::request_failed',
           details: rawResponse.statusText,
         }
+        throw err
       }
-      throw err
+      return rawResponse
     } 
   })
 }

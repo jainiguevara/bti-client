@@ -5,14 +5,9 @@ import { connect } from 'react-redux'
 import { isLoggedIn } from './../selectors/user'
 import Login  from './../containers/Login'
 
-const LoginGate = (props) => {
-  return isLoggedIn(props.user) ? props.children : <Login />
+const LoginGate = ({ isLoggedIn, children, dispatch }) => {
+  console.log('LoginGate', isLoggedIn)
+  return isLoggedIn ? children : <Login />
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.users
-  }
-}
-
-export default connect(mapStateToProps)(LoginGate)
+export default connect(isLoggedIn)(LoginGate)
