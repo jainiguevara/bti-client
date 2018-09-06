@@ -5,6 +5,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { Button, Card, CardActions, CardContent, CardMedia, Divider, Typography, Grid, IconButton } from '@material-ui/core';
 import { MonetizationOn, Folder } from '@material-ui/icons'
 
+import PostForm from './../post/PostForm'
+import history from'./../../history'
+
 const styles = theme => ({
   card: {
     maxWidth: 345,
@@ -37,7 +40,7 @@ const styles = theme => ({
 })
 
 const PanelCard = props => {
-  const { classes, title, image, headerColor, icon, description, postRoute, reportRoute } = props;
+  const { classes, title, image, headerColor, icon, description, postRoute, reportRoute, form } = props;
   return (
     <div>
       <Card className={classes.card}>
@@ -59,9 +62,13 @@ const PanelCard = props => {
         <CardContent>
           <Grid container>
             <Grid item xs={12}>
-              <Typography component="p">
-                Click on the buttons below for posting and generation of reports specifically for this bank.
-              </Typography>
+              { form ?
+                <PostForm route={postRoute} />
+              :
+                <Typography component="p">
+                  {description}
+                </Typography>
+              }
             </Grid>
           </Grid>
         </CardContent>
@@ -69,13 +76,17 @@ const PanelCard = props => {
         <CardActions>
           <Grid container>
             <Grid item xs={6}>
-              <Button href={postRoute} className={classes.button}>
+              <Button onClick={() => {
+                  history.push(`/${postRoute}`)
+                }} className={classes.button}>
                 <MonetizationOn className={classNames(classes.leftIcon, classes.iconSmall)} />
                 POST
               </Button>
             </Grid>
             <Grid item xs={6}>
-            <Button href={reportRoute} className={classes.button}>
+            <Button onClick={() => {
+              history.push(`/${reportRoute}`)
+              }} className={classes.button}>
               <Folder className={classNames(classes.leftIcon, classes.iconSmall)} />
               REPORT
             </Button>

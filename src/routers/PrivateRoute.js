@@ -10,27 +10,31 @@ let userData = {}
 class PrivateRoute extends React.Component {
   constructor(props) {
     super(props)
-    if (isLoggedIn({ exp: localStorage.getItem('exp')} )) {
+    this.state = {
+      ...JSON.parse(localStorage.getItem('user'))
+    }
+    if (isLoggedIn({ exp: this.state.exp })) {
       this.state = {
+        ...this.state,
         isLoggedIn: true
       }
     } else {
       this.state = {
+        ...this.state,
         isLoggedIn: false
       }
     }
   }
 
   componentDidMount() {
-    if (!isLoggedIn({ exp: localStorage.getItem('exp')} )) {
-      logoutUser({ token: localStorage.getItem('token') }, this.props.dispatch)
+    if (!isLoggedIn({ exp: this.state.exp })) {
+      logoutUser({ token: this.state.tokens[0].token }, this.props.dispatch)
         .then(() => {
-          localStorage.removeItem('exp')
-          localStorage.removeItem('token')
           this.setState({
             isLoggedIn: false
           })
         })
+      localStorage.removeItem('user')
     }
   }
 

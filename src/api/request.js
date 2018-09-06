@@ -1,8 +1,9 @@
-const request = ({ url, body, token = undefined, method = 'POST' }) => {
+const request = ({ url, body, token = undefined, method = 'POST', headers = {} }) => {
   const server = process.env.REACT_APP_API_SERVER
   const serverToken = process.env.REACT_APP_SERVER_TOKEN
   let rawResponse
-  let headers = {
+  headers = {
+    ...headers,
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${serverToken}`
   }

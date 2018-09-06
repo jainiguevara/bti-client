@@ -37,11 +37,10 @@ class LoginForm extends React.Component {
     submitLogin({
       email: this.state.email,
       password: this.state.password
-    }, this.props.dispatch).then(data => {
-      console.log(data)
-      history.push(`/${data._id}`)
+    }, this.props.dispatch).then(() => {
+      window.location = '/'
     }).catch(e => {
-      // do validation error
+      console.log(e);
     })
   }
 

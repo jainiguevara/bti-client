@@ -1,8 +1,8 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import history from './../../history'
 
 import { Divider, Menu, AppBar, Toolbar, Typography, MenuItem } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
@@ -13,7 +13,11 @@ import StoreIcon from '@material-ui/icons/Store'
 import HomeIcon from '@material-ui/icons/Home'
 import { ExpandLess, ExpandMore, MonetizationOn, Folder } from '@material-ui/icons'
 
+import history from './../../history'
+import { metrobank, chinabank } from './../../statics/bank-data'
 import { logoutUser } from './../../actions/user'
+import { isLoggedIn } from './../../selectors/user'
+
 
 const styles = theme => ({
   root: {
@@ -43,7 +47,8 @@ class Header extends React.Component {
     auth: true,
     anchorEl: null,
     openMetrobank: false,
-    openChinabank: false
+    openChinabank: false,
+    ...JSON.parse(localStorage.getItem('user'))
   }
 
   handleMenu = event => {
@@ -55,21 +60,24 @@ class Header extends React.Component {
   }
 
   handleLogout = () => {
-    this.setState({ anchorEl: null })
-    if (localStorage.getItem('token')) {
+    console.log(this.state)
+    if (this.state.tokens[0].user) {
       logoutUser({ 
-        token: localStorage.getItem('token') 
+        token: this.state.tokens[0].user 
       }, this.props.dispatch).then(() => {}).catch(() => {})
     }
-    localStorage.removeItem('exp')
-    localStorage.removeItem('token')
+    this.setState({ anchorEl: null, exp: 0 })
+    localStorage.removeItem('user')
     history.push('/login')
   }
 
-  toggleDrawer = (side, open) => () => {
+  toggleDrawer = (side, open, route = undefined) => () => {
     this.setState({
       [side]: open,
     })
+    if (route) {
+      history.push(route)
+    }
   }
 
   handleClick = bank => () => {
@@ -88,7 +96,7 @@ class Header extends React.Component {
   const sideList = (
     <div className={classes.list}>
       <List>
-        <ListItem button>
+        <ListItem button onClick={() => history.push('/')}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
@@ -97,7 +105,9 @@ class Header extends React.Component {
       </List>
     </div>
   )
-
+  if (!isLoggedIn({ exp: this.state.exp })) {
+    return null
+  } else {
     return (
       <AppBar position="static" color="default" className={classes.padBottom}>
         <Toolbar>
@@ -130,7 +140,7 @@ class Header extends React.Component {
               <List component="div" disablePadding>
                 <ListItem button
                   className={classes.nested}
-                  onClick={this.toggleDrawer('left', false)}
+                  onClick={this.toggleDrawer('left', false, `/${chinabank.postRoute}`)}
                   onKeyDown={this.toggleDrawer('left', false)}
                 >
                   <ListItemIcon>
@@ -140,7 +150,7 @@ class Header extends React.Component {
                 </ListItem>
                 <ListItem button
                   className={classes.nested}
-                  onClick={this.toggleDrawer('left', false)}
+                  onClick={this.toggleDrawer('left', false, `/${chinabank.reportRoute}`)}
                   onKeyDown={this.toggleDrawer('left', false)}
                 >
                   <ListItemIcon>
@@ -161,7 +171,7 @@ class Header extends React.Component {
               <List component="div" disablePadding>
                 <ListItem button
                   className={classes.nested}
-                  onClick={this.toggleDrawer('left', false)}
+                  onClick={this.toggleDrawer('left', false, `/${metrobank.postRoute}`)}
                   onKeyDown={this.toggleDrawer('left', false)}
                 >
                   <ListItemIcon>
@@ -171,7 +181,7 @@ class Header extends React.Component {
                 </ListItem>
                 <ListItem button
                   className={classes.nested}
-                  onClick={this.toggleDrawer('left', false)}
+                  onClick={this.toggleDrawer('left', false, `/${metrobank.reportRoute}`)}
                   onKeyDown={this.toggleDrawer('left', false)}
                 >
                   <ListItemIcon>
@@ -218,6 +228,7 @@ class Header extends React.Component {
         </Toolbar>
       </AppBar>
     )
+  }
   }
 }
 

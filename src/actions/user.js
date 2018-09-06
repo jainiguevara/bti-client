@@ -12,13 +12,12 @@ export const submitLogin = ({ email, password }, dispatch) => {
         throw new Error(error)
       } 
       dispatch(LOGIN_SUCCESS(res))
-      localStorage.setItem('token', res.tokens[0].token)
-      localStorage.setItem('exp', res.exp)
+      localStorage.setItem('user', JSON.stringify(res))
       return Promise.resolve(res)
     }).catch(e => {
       dispatch(LOGIN_FAILED(e))
       return Promise.reject(e)
-  })
+    })
 }
 
 export const logoutUser = ({ token }, dispatch) => {

@@ -4,15 +4,15 @@ import { Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-import Chinabank from './Chinabank';
-import Metrobank from './Metrobank';
+import { metrobank, chinabank } from './../../statics/bank-data'
+import PanelCard from './PanelCard'
 
 const styles = () => ({
   root: {
     flexGrow: 1,
   },
   mobileGrid: {
-    paddingLeft: '5%'
+    padding: 10
   }
 });
 
@@ -27,10 +27,10 @@ const Panels = props => {
             (
               <Grid className={classes.mobileGrid} container spacing={24}>
                 <Grid item xs={12} sm={6}>
-                  <Chinabank /> 
+                  <PanelCard {...chinabank} />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Metrobank />
+                  <PanelCard {...metrobank} />
                 </Grid>
               </Grid>
             ) : (
@@ -41,20 +41,20 @@ const Panels = props => {
                 (
                   <Grid container spacing={24}>
                     <Grid item xs={12} sm={6}>
-                      <Chinabank /> 
+                      <PanelCard {...chinabank} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <Metrobank />
+                    <PanelCard {...metrobank} />
                     </Grid>
                   </Grid>
                 ) : (
                   <Grid container spacing={24}>
                     <Grid item xs={6} sm={3}></Grid>
                     <Grid item xs={6} sm={3}>
-                      <Chinabank /> 
+                      <PanelCard {...chinabank} />
                     </Grid>
                     <Grid item xs={6} sm={3}>
-                      <Metrobank />
+                      <PanelCard {...metrobank} />
                     </Grid>
                     <Grid item xs={6} sm={3}></Grid>
                   </Grid>
