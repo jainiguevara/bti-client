@@ -40,7 +40,7 @@ const styles = theme => ({
 })
 
 const PanelCard = props => {
-  const { classes, title, image, headerColor, icon, description, postRoute, reportRoute, form } = props;
+  const { classes, title, image, headerColor, template, icon, description, postRoute, reportRoute, form } = props;
   return (
     <div>
       <Card className={classes.card}>
@@ -63,7 +63,7 @@ const PanelCard = props => {
           <Grid container>
             <Grid item xs={12}>
               { form ?
-                <PostForm route={postRoute} />
+                <PostForm template={template} route={postRoute} />
               :
                 <Typography component="p">
                   {description}

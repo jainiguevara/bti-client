@@ -168,7 +168,6 @@ class TransactionsTable extends React.Component {
     const { rows, rowsPerPage, page } = this.state;
 
     console.log(rows)
-    // debugger
 
     if (!rows) {
       return (
@@ -177,7 +176,7 @@ class TransactionsTable extends React.Component {
         </div>
       )
     } else {
-      if (rows.length !== 0) {
+      if (rows.length !== 0 && !rows.message) {
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
         return (
           <Paper className={classes.root}>

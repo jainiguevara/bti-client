@@ -28,12 +28,14 @@ class PrivateRoute extends React.Component {
 
   componentDidMount() {
     if (!isLoggedIn({ exp: this.state.exp })) {
-      logoutUser({ token: this.state.tokens[0].token }, this.props.dispatch)
+      if (this.state.tokens || this.state.tokens.length !== 0) {
+        logoutUser({ token: this.state.tokens[0].token }, this.props.dispatch)
         .then(() => {
           this.setState({
             isLoggedIn: false
           })
         })
+      }
       localStorage.removeItem('user')
     }
   }
