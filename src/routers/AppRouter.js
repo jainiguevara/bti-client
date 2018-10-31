@@ -19,7 +19,7 @@ const NotFound = () => {
 const AppRouter = () => (
   <Router history={history}>
     <Switch>
-      <Route path="/login" component={Login} />
+      {/* <Route path="/login" component={Login} /> */}
       <PrivateRoute path="/post/:bank" component={Post} />
       <PrivateRoute path="/" component={Dashboard} />
     </Switch>

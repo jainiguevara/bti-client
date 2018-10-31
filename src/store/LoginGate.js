@@ -7,7 +7,13 @@ import Login  from './../containers/Login'
 
 const LoginGate = ({ isLoggedIn, children, dispatch }) => {
   console.log('LoginGate', isLoggedIn)
-  return isLoggedIn ? children : <Login />
+  return isLoggedIn() ? children : <Login />
 }
 
-export default connect(isLoggedIn)(LoginGate)
+const mapStateToProps = state => {
+  return {
+    isLoggedIn
+  }
+}
+
+export default connect(mapStateToProps)(LoginGate)
