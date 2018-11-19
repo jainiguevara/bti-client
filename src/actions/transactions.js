@@ -1,8 +1,8 @@
 import request from '../api/request'
 
-export const fetchTransactions = tokens => {
+export const fetchTransactions = (tokens, bank) => {
   const response =  request({
-    url: 'post/metrobank',
+    url: `post/${bank}`,
     method: 'GET',
     token: tokens[0].token
   }).then((res, error) => {

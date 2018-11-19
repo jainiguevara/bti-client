@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { userEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -127,11 +127,11 @@ const CustomTableCell = withStyles(theme => ({
     color: theme.palette.common.white,
   },
   body: {
-    fontSize: 14,
+    fontSize: 10,
   },
 }))(TableCell);
 
-class TransactionsTable extends React.Component {
+class CBTransactionsTable extends React.Component {
   state = {
     rows: this.props.transactions,
     page: 0,
@@ -139,20 +139,24 @@ class TransactionsTable extends React.Component {
     ...JSON.parse(localStorage.getItem('user')),
   };
 
+  // useEffect(() => {
+  //   const { bank } = this.props
+  //   const tokens = this.state.tokens
+  //   this.props.fetchTransactions(tokens, bank) 
+  // }, [this.props.transactions]);
+
   componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 3000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID)
-  }
-
-  tick() {
+    const { bank } = this.props
     const tokens = this.state.tokens
-    this.props.fetchTransactions(tokens)    
-    this.setState({
-      rows: this.props.transactions
-    })
+    this.props.fetchTransactions(tokens, bank)    
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.transactions !== this.props.transactions) {
+      this.setState({
+        rows: this.props.transactions
+      })
+    }
   }
 
   handleChangePage = (event, page) => {
@@ -168,7 +172,6 @@ class TransactionsTable extends React.Component {
     const { rows, rowsPerPage, page } = this.state;
 
     console.log(rows)
-
     if (!rows) {
       return (
         <div>
@@ -176,6 +179,7 @@ class TransactionsTable extends React.Component {
         </div>
       )
     } else {
+      
       if (rows.length !== 0 && !rows.message) {
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
         return (
@@ -184,25 +188,28 @@ class TransactionsTable extends React.Component {
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    <CustomTableCell>Reference No.</CustomTableCell>
-                    <CustomTableCell>Remitter</CustomTableCell>
-                    <CustomTableCell>Beneficiary Name</CustomTableCell>
+                    <CustomTableCell>Application No.</CustomTableCell>
+                    <CustomTableCell>Account Name</CustomTableCell>
+                    <CustomTableCell>Account Number</CustomTableCell>
+                    <CustomTableCell>Amount</CustomTableCell>
+                    {/* <CustomTableCell>Cover Number</CustomTableCell> */}
                     <CustomTableCell>Status</CustomTableCell>
-                    <CustomTableCell>Date</CustomTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
                     const data = JSON.parse(row.data)
+                    console.log(data)
                     return (
                       <TableRow key={row._id}>
                         <TableCell component="th" scope="row">
-                          {row.ftReferenceNo}
+                          {row.referenceNo}
                         </TableCell>
-                        <TableCell>{data.ftRemitter}</TableCell>
-                        <TableCell>{data.ftBnfName}</TableCell>
+                        <TableCell>{data.accountName}</TableCell>
+                        <TableCell>{data.accountNumber}</TableCell>
+                        <TableCell>{data.beneAmtConv}</TableCell>
+                        {/* <TableCell>{row.cb_coverNumber}</TableCell> */}
                         <TableCell>{row.remarks}</TableCell>
-                        <TableCell>{row.completedAt && moment(row.completedAt).format('MM/DD/YYYY')}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -246,7 +253,7 @@ class TransactionsTable extends React.Component {
   }
 }
 
-TransactionsTable.propTypes = {
+CBTransactionsTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
@@ -258,8 +265,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchTransactions: tokens => {
-      dispatch(fetchTransactions(tokens))
+    fetchTransactions: (tokens, bank) => {
+      dispatch(fetchTransactions(tokens, bank))
     }
   }
 }
@@ -267,4 +274,4 @@ const mapDispatchToProps = dispatch => {
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, mapDispatchToProps)
-)(TransactionsTable)
+)(CBTransactionsTable)

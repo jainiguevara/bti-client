@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render the LoginForm 1`] = `
+<div
+  className="LoginHeader-root-1"
+>
+  <h2
+    className="MuiTypography-root-2 MuiTypography-title-8"
+  >
+    BTI COURIER EXPRESS INC. - API
+  </h2>
+</div>
+`;

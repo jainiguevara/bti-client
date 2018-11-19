@@ -18,10 +18,10 @@ const Transaction = props => {
   }
   return (
     <Grid style={{padding: 10}} container spacing={24}>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={4} lg={4}>
         <PanelCard {...data} />
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} md={8} lg={8}>
         <StatusTable {...data} />
       </Grid>
     </Grid>

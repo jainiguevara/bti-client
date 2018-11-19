@@ -7,17 +7,19 @@ const defaults = {
 }
 
 export const metrobank = {
+  bank: 'metrobank',
   title: 'Metrobank API',
-    image: 'metrobank.jpg',
-    headerColor: '#283593', 
-    icon: 'blood-culture.png',
-    postRoute: 'post/metrobank',
-    reportRoute: 'list/metrobank',
-    template: mbTemplate,
-    ...defaults
+  image: 'metrobank.jpg',
+  headerColor: '#283593', 
+  icon: 'blood-culture.png',
+  postRoute: 'post/metrobank',
+  reportRoute: 'list/metrobank',
+  template: mbTemplate,
+  ...defaults
 }
 
 export const chinabank = {
+  bank: 'chinabank',
   title: 'Chinabank API',
   image: 'chinabank.jpg',
   headerColor: '#D32F2F', 
