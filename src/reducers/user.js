@@ -1,3 +1,5 @@
+import { LOGIN_SUCCESS, LOGIN_FAILED, FETCH_USER, FETCH_USER_SUCCESS, FETCH_USER_FAILED } from './../actions/user'
+
 const initialState = {
   _id: undefined,
   email: undefined,
@@ -5,19 +7,19 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  const user = action.user
+  const { user, error } = action
   switch (action.type) {
-    case 'LOGIN_SUCCESS':
+    case LOGIN_SUCCESS:
       return Object.assign({}, state, user)
-    case 'LOGIN_FAILED':
-      return action.error
-    case 'FETCH_USER':
+    case LOGIN_FAILED:
+      return Object.assign({}, state, error)
+    case FETCH_USER:
       return Object.assign({}, state, user)
-    case 'FETCH_USER_SUCCESS':
-      return {...user }
-    case 'FETCH_USER_FAILED':
-      return action.error
+    case FETCH_USER_SUCCESS:
+      return  Object.assign({}, state, user)
+    case FETCH_USER_FAILED:
+      return Object.assign({}, state, user)
     default:
-      return { ...state }
+      return state
   }
 }

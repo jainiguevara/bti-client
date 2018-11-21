@@ -1,23 +1,32 @@
-import { connect } from 'react-redux'
 import request from './../api/request'
 
-// ACTION CREATORS
-export const submitLogin = ({ email, password }, dispatch) => {
-  dispatch(LOGIN_REQUESTED())
-    return request({ 
-      url: 'user/login',
-      body: { email, password }
-    }).then((res, error) => {
-      if (error) {
-        throw new Error(error)
-      } 
-      dispatch(LOGIN_SUCCESS(res))
-      localStorage.setItem('user', JSON.stringify(res))
-      return Promise.resolve(res)
-    }).catch(e => {
-      dispatch(LOGIN_FAILED(e))
-      return Promise.reject(e)
-    })
+// actions
+export const LOGIN_REQUESTED = 'LOGIN_REQUESTED'
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const LOGIN_FAILED = 'LOGIN_FAILED'
+export const LOGOUT_REQUESTED = 'LOGOUT_REQUESTED'
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+export const LOGOUT_FAILED = 'LOGOUT_FAILED'
+export const FETCH_USER_REQUESTED = 'FETCH_USER_REQUESTED'
+export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS'
+export const FETCH_USER = 'FETCH_USER'
+export const FETCH_USER_FAILED = 'FETCH_USER_FAILED'
+
+// action creators
+export const submitLogin = ({ email, password }) => async (dispatch, getState) => {
+  dispatch({ type: LOGIN_REQUESTED })
+  return request({
+    url: 'user/login',
+    body: { email, password },
+  }).then((res, error) => {
+    if (error) {
+      throw new Error(error)
+    } 
+    dispatch({ type: LOGIN_SUCCESS, user: res })
+    return res
+  }).catch(error => {
+    dispatch({ type: LOGIN_FAILED, error })
+  })
 }
 
 export const logoutUser = ({ token }, dispatch) => {
@@ -55,23 +64,13 @@ export const fetchUser = (id, dispatch) => {
   })
 }
 
-// ACTIONS
-export const LOGIN_REQUESTED = () => ({ type: 'LOGIN_REQUESTED' })
-export const LOGIN_SUCCESS = (user) => ({
-  type: 'LOGIN_SUCCESS',
-  user 
-})
-export const LOGIN_FAILED = (error) => ({
-  type: 'LOGIN_FAILED',
-  error
-})
-export const LOGOUT_REQUESTED = () => ({ type: 'LOGOUT_REQUESTED' })
-export const LOGOUT_SUCCESS = () => ({ type: 'LOGOUT_SUCCESS' })
-export const LOGOUT_FAILED = () => ({ type: 'LOGOUT_FAILED' })
-export const FETCH_USER_REQUESTED = () => ({ type: 'FETCH_USER_REQUESTED'})
-export const FETCH_USER_SUCCESS = (user) => ({ type: 'FETCH_USER_SUCCESS', user })
-export const FETCH_USER = () => ({ type: 'FETCH_USER' })
-export const FETCH_USER_FAILED = (error) => ({ 
-  type: 'FETCH_USER_FAILED',
-  error 
-})
+// export const LOGOUT_REQUESTED = () => ({ type: 'LOGOUT_REQUESTED' })
+// export const LOGOUT_SUCCESS = () => ({ type: 'LOGOUT_SUCCESS' })
+// export const LOGOUT_FAILED = () => ({ type: 'LOGOUT_FAILED' })
+// export const FETCH_USER_REQUESTED = () => ({ type: 'FETCH_USER_REQUESTED'})
+// export const FETCH_USER_SUCCESS = (user) => ({ type: 'FETCH_USER_SUCCESS', user })
+// export const FETCH_USER = () => ({ type: 'FETCH_USER' })
+// export const FETCH_USER_FAILED = (error) => ({ 
+//   type: 'FETCH_USER_FAILED',
+//   error 
+// })

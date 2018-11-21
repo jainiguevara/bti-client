@@ -36,15 +36,15 @@ const request = ({ url, body, token = undefined, method = 'POST', headers = {} }
   }).catch(err => {
     if (err) {
       throw {
-        message: 'err::system_error',
-        details: err.toString()
+        message: 'system_error',
+        details: err
       }
     }
     if (rawResponse) {
       if (rawResponse.ok === false && err.toString().match(/^Syntax/i)) {
         // Could not parse the body.
         err = {
-          message: 'err::request_failed',
+          message: 'request_failed',
           details: rawResponse.statusText,
         }
         throw err

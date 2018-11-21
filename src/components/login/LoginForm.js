@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
@@ -33,14 +33,19 @@ class LoginForm extends React.Component {
   }
 
   handleSubmit = e => {
+    const { submitLogin } = this.props
     // add validation handling here
+    // submitLogin({
+    //   email: this.state.email,
+    //   password: this.state.password
+    // }, this.props.dispatch).then(() => {
+    //   window.location = '/'
+    // }).catch(e => {
+    //   console.log(e);
+    // })
     submitLogin({
-      email: this.state.email,
-      password: this.state.password
-    }, this.props.dispatch).then(() => {
-      window.location = '/'
-    }).catch(e => {
-      console.log(e);
+        email: this.state.email,
+        password: this.state.password
     })
   }
 
@@ -122,13 +127,14 @@ const mapStateToProps = state => {
   }
 }
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-    
-//   }
-// }
-
+const mapDispatchToProps = dispatch => {
+  return {
+    submitLogin: payload => {
+      dispatch(submitLogin(payload))
+    }
+  }
+}
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(LoginForm)

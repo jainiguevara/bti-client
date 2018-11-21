@@ -4,6 +4,7 @@ import { Router, Route, Switch } from 'react-router-dom'
 import PrivateRoute from './PrivateRoute'
 import Dashboard from './../components/dashboard'
 import Post from './../components/post'
+import Report from './../components/post/report'
 import Login from './../containers/Login'
 import Main from './../containers/Main'
 import history from './../history'
@@ -21,6 +22,7 @@ const AppRouter = () => (
     <Switch>
       <Route path="/login" component={Login} />
       <PrivateRoute path="/post/:bank" component={Post} />
+      <PrivateRoute path="/report/:bank" component={Report} />
       <PrivateRoute path="/" component={Dashboard} />
     </Switch>
   </Router>

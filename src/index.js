@@ -6,17 +6,17 @@ import { PersistGate } from 'redux-persist/integration/react'
 import './index.css';
 import registerServiceWorker from './registerServiceWorker'
 import App from './App'
-import { store , persistor } from './store/configureStore'
+import { store, persistor } from './store/configureStore'
 import Loading from './components/utility/Loading'
 import Main from './containers/Main'
 
 const AppWrapper = (
   <Provider store={store}>
+    <PersistGate loading={<Loading />} persistor={persistor}>
     <Main>
-      <PersistGate loading={<Loading />} persistor={persistor}>
         <App />
-      </PersistGate>
     </Main>
+    </PersistGate>
   </Provider>
 )
 

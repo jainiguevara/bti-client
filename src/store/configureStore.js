@@ -1,26 +1,37 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import compose from 'lodash/fp/compose'
+import { createStore, applyMiddleware, } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-// import reduxPromise from 'redux-promise'
 import thunk from 'redux-thunk'
-import async from './../middleware/async'
-import transactionsReducer from './../reducers/transactions'
+
+import reducers from './reducers'
 
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: [ 'user', 'transactions' ]
 }
- 
-const persistedReducer = persistReducer(
-  persistConfig, 
-  combineReducers({
-    transactions: transactionsReducer
-  })
-)
 
-export const store = createStore(
-  persistedReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(async),
-)
-export const persistor = persistStore(store)
+const initialState = {}
+
+const configureStore = initialState => {
+  const persistedReducer = persistReducer(persistConfig, reducers)
+
+  const middlewares = []
+  const enhancers = []
+
+  middlewares.push(thunk)
+  enhancers.push(applyMiddleware(...middlewares))
+  if (process.env.REACT_APP_DEV === 1 || process.env.REACT_APP_DEV) {
+    enhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+  }
+  const enhancer = compose(...enhancers)
+
+  const newStore = createStore(persistedReducer, initialState, enhancer)
+  return newStore
+}
+
+const store = configureStore(initialState)
+const persistor = persistStore(store)
+
+export { store, persistor }

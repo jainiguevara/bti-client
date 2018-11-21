@@ -1,14 +1,21 @@
+import { FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_FAILED } from './../actions/transactions'
+
 const initialState = { }
 
 export default (state = initialState, action) => {
-  const payload = action.payload
+  const {payload, error } = action
   switch (action.type) {
-    case 'FETCH_TRANSACTIONS':
+    case FETCH_TRANSACTIONS:
       return {
         ...state,
-        payload
+        payload,
+      }
+    case FETCH_TRANSACTIONS_FAILED:
+      return {
+        ...state,
+        error,
       }
     default:
-      return { ...state }
+      return state
   }
 }

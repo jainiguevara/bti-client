@@ -1,17 +1,22 @@
 import request from '../api/request'
 
-export const fetchTransactions = (tokens, bank) => {
-  const response =  request({
+// actions
+export const FETCH_TRANSACTIONS = 'FETCH_TRANSACTIONS'
+export const FETCH_TRANSACTIONS_FAILED = 'FETCH_TRANSACTIONS_FAILED'
+
+// action creator
+export const fetchTransactions = (tokens, bank) => (dispatch, getState) => {
+  return request({
     url: `post/${bank}`,
     method: 'GET',
     token: tokens[0].token
   }).then((res, error) => {
+    if (error) {
+      throw new Error(error)
+    }
+    dispatch({ type: FETCH_TRANSACTIONS, res })
     return res
-  }).catch(e => {
-    return e
+  }).catch(error => {
+    dispatch({ type: FETCH_TRANSACTIONS_FAILED, error })
   })
-  return FETCH_TRANSACTIONS(response)
 }
-
-
-export const FETCH_TRANSACTIONS = response => ({ type: 'FETCH_TRANSACTIONS', payload: response })
