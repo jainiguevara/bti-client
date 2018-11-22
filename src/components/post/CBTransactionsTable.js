@@ -133,29 +133,23 @@ const CustomTableCell = withStyles(theme => ({
 
 class CBTransactionsTable extends React.Component {
   state = {
-    rows: this.props.transactions,
     page: 0,
     rowsPerPage: 5,
-    ...JSON.parse(localStorage.getItem('user')),
   };
 
-  // useEffect(() => {
-  //   const { bank } = this.props
-  //   const tokens = this.state.tokens
-  //   this.props.fetchTransactions(tokens, bank) 
-  // }, [this.props.transactions]);
-
-  componentDidMount() {
-    const { bank } = this.props
-    const tokens = this.state.tokens
-    this.props.fetchTransactions(tokens, bank)    
+  componentDidMount () {
+    const { user, bank, query } = this.props
+    debugger
+    this.props.fetchTransactions(user.tokens, bank, query)
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.transactions !== this.props.transactions) {
-      this.setState({
-        rows: this.props.transactions
-      })
+  componentDidUpdate (prevProps) {
+    if (prevProps.transactions.data.length !== this.props.transactions.data.length ||
+      prevProps.query !== this.props.query
+      ) {
+      debugger
+      const { user, bank, query } = this.props
+      this.props.fetchTransactions(user.tokens, bank, query)
     }
   }
 
@@ -168,9 +162,9 @@ class CBTransactionsTable extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { rows, rowsPerPage, page } = this.state;
-
+    const { classes, transactions: { data } } = this.props;
+    const { rowsPerPage, page } = this.state;
+    const rows = data
     console.log(rows)
     if (!rows) {
       return (
@@ -257,21 +251,22 @@ CBTransactionsTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => {
-  return {
-    transactions: state.transactions && state.transactions.payload
-  }
-}
+// const mapStateToProps = state => {
+//   return {
+//     user: state.user,
+//     transactions: state.transactions
+//   }
+// }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchTransactions: (tokens, bank) => {
-      dispatch(fetchTransactions(tokens, bank))
-    }
-  }
-}
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     fetchTransactions: (tokens, bank) => {
+//       dispatch(fetchTransactions(tokens, bank))
+//     }
+//   }
+// }
 
 export default compose(
   withStyles(styles),
-  connect(mapStateToProps, mapDispatchToProps)
+  // connect(mapStateToProps, mapDispatchToProps)
 )(CBTransactionsTable)

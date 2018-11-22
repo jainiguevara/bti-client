@@ -29,8 +29,8 @@ export const submitLogin = ({ email, password }) => async (dispatch, getState) =
   })
 }
 
-export const logoutUser = ({ token }, dispatch) => {
-  dispatch(LOGOUT_REQUESTED())
+export const logoutUser = ({ token }) => async (dispatch, getState) => {
+  dispatch({ type: LOGOUT_REQUESTED })
     return request({
       method: 'DELETE', 
       url: 'user/me/token',
@@ -38,12 +38,11 @@ export const logoutUser = ({ token }, dispatch) => {
     }).then((res, error) => {
       if (error) {
         throw new Error(error)
-      } 
-      dispatch(LOGIN_SUCCESS())
-      return Promise.resolve()
-    }).catch(e => {
-      dispatch(LOGOUT_FAILED(e))
-      return Promise.reject(e)
+      }
+      dispatch({ type: LOGOUT_SUCCESS, user: res })
+      return res
+    }).catch(error => {
+      dispatch({ type: LOGOUT_FAILED, error })
   })
 }
 

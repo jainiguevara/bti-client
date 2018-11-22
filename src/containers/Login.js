@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 // import connect from "../components/login/connect";
 import Background from "./../images/bg.jpg";
 import LoginForm from "./../components/login/LoginForm";
+import LoginFormHooked from "./../components/login/LoginFormHooked";
 import LoginHeader from "./../components/login/LoginHeader";
 
 const styles = () => ({

@@ -1,9 +1,11 @@
-import { LOGIN_SUCCESS, LOGIN_FAILED, FETCH_USER, FETCH_USER_SUCCESS, FETCH_USER_FAILED } from './../actions/user'
+import { LOGIN_SUCCESS, LOGIN_FAILED, FETCH_USER, FETCH_USER_SUCCESS, FETCH_USER_FAILED, LOGOUT_SUCCESS, LOGOUT_FAILED } from './../actions/user'
 
 const initialState = {
   _id: undefined,
   email: undefined,
-  exp: 0
+  exp: 0,
+  tokens: [],
+  error: {}
 }
 
 export default (state = initialState, action) => {
@@ -12,6 +14,10 @@ export default (state = initialState, action) => {
     case LOGIN_SUCCESS:
       return Object.assign({}, state, user)
     case LOGIN_FAILED:
+      return Object.assign({}, state, error)
+    case LOGOUT_SUCCESS:
+      return Object.assign({}, state, initialState)
+    case LOGOUT_FAILED:
       return Object.assign({}, state, error)
     case FETCH_USER:
       return Object.assign({}, state, user)

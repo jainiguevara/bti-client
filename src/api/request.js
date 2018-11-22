@@ -21,7 +21,7 @@ const request = ({ url, body, token = undefined, method = 'POST', headers = {} }
     headers
   }).then(response => {
     rawResponse = response
-    if (method ===' DELETE') {
+    if (method === 'DELETE') {
       return response
     } else {
       return response.json()

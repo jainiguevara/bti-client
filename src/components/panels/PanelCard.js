@@ -28,7 +28,7 @@ const styles = theme => ({
   iconText: {
     color: 'primary',
   },
-  button: {
+  buttons: {
     margin: theme.spacing.unit,
   },
   leftIcon: {
@@ -63,7 +63,7 @@ const PanelCard = props => {
           <Grid container>
             <Grid item xs={12}>
               { form ?
-                <PostForm template={template} route={postRoute} />
+                <PostForm {...props} route={postRoute} />
               :
                 <Typography component="p">
                   {description}
@@ -78,7 +78,7 @@ const PanelCard = props => {
             <Grid item xs={6}>
               <Button onClick={() => {
                   history.push(`/${postRoute}`)
-                }} className={classes.button}>
+                }} className={classes.buttons}>
                 <MonetizationOn className={classNames(classes.leftIcon, classes.iconSmall)} />
                 POST
               </Button>
@@ -86,7 +86,7 @@ const PanelCard = props => {
             <Grid item xs={6}>
             <Button onClick={() => {
               history.push(`/${reportRoute}`)
-              }} className={classes.button}>
+              }} className={classes.buttons}>
               <Folder className={classNames(classes.leftIcon, classes.iconSmall)} />
               REPORT
             </Button>

@@ -1,43 +1,17 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import { isLoggedIn } from './../selectors/user'
-import { logoutUser, fetchUser } from './../actions/user'
 import { connect } from 'react-redux'
-import history from './../history'
 
-let userData = {}
 
 class PrivateRoute extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      ...JSON.parse(localStorage.getItem('user'))
-    }
-    if (isLoggedIn({ exp: this.state.exp })) {
-      this.state = {
-        ...this.state,
-        isLoggedIn: true
-      }
-    } else {
-      this.state = {
-        ...this.state,
-        isLoggedIn: false
-      }
-    }
+
   }
 
   componentDidMount() {
-    if (!isLoggedIn({ exp: this.state.exp })) {
-      if (this.state.tokens || this.state.tokens.length !== 0) {
-        logoutUser({ token: this.state.tokens[0].token }, this.props.dispatch)
-        .then(() => {
-          this.setState({
-            isLoggedIn: false
-          })
-        })
-      }
-      localStorage.removeItem('user')
-    }
+
   }
 
   render() {
@@ -45,17 +19,8 @@ class PrivateRoute extends React.Component {
     return (
       <Route
         {...rest}
-        render = { props => 
-            this.state.isLoggedIn ? (
-              <Component {...props} />
-            ) : (
-              <Redirect
-                to={{
-                  pathname: "/login",
-                  state: { from: props.location }
-                }}
-              />
-            )
+        render = { 
+          props => <Component {...props} />
         }
       />
     )
@@ -64,7 +29,8 @@ class PrivateRoute extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    isLoggedIn
   }
 }
 

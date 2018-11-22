@@ -3,6 +3,7 @@ import React from 'react'
 import { Paper, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 
+import DateFilters from './../metrics/DateFilters'
 import MBTransactionsTable from './MBTransactionsTable'
 import CBTransactionsTable from './CBTransactionsTable'
 
@@ -23,6 +24,10 @@ const StatusTable = (props) => {
         <Typography variant="headline">
           Your Transactions Today
         </Typography>
+        <br />
+        <div>
+          <DateFilters {...props} />
+        </div>
         {
           bank === 'metrobank'
             ? <MBTransactionsTable {...props} /> 

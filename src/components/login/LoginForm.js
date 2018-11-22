@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
@@ -7,10 +8,8 @@ import { Button, FormControl, TextField, Input, InputLabel, IconButton, InputAdo
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { withStyles } from '@material-ui/core/styles';
 
-import history from './../../history'
-import configureStore from './../../store/configureStore';
 import { submitLogin } from './../../actions/user'
-import { isLoggedIn } from './../../selectors/user'
+import history from'./../../history'
 
 // const store = configureStore()
 
@@ -30,23 +29,18 @@ class LoginForm extends React.Component {
       email: '',
       password: ''
     }
+    if (props.user) {
+      history.push('/')
+    }
   }
 
   handleSubmit = e => {
     const { submitLogin } = this.props
-    // add validation handling here
-    // submitLogin({
-    //   email: this.state.email,
-    //   password: this.state.password
-    // }, this.props.dispatch).then(() => {
-    //   window.location = '/'
-    // }).catch(e => {
-    //   console.log(e);
-    // })
     submitLogin({
         email: this.state.email,
         password: this.state.password
     })
+    // history.push('/dashboard')
   }
 
   handleEmailChange = e => {
@@ -105,6 +99,8 @@ class LoginForm extends React.Component {
             />
           </FormControl>
           <Button 
+            component={Link}
+            to="/dashboard"
             variant="contained" 
             color="secondary" 
             className={classes.button}
@@ -134,6 +130,7 @@ const mapDispatchToProps = dispatch => {
     }
   }
 }
+
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, mapDispatchToProps)

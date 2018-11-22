@@ -9,7 +9,8 @@ import reducers from './reducers'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [ 'user', 'transactions' ]
+  whitelist: [ 'user', 'transactions', 'query' ],
+  // blacklist: [ 'user', 'transactions' ]
 }
 
 const initialState = {}

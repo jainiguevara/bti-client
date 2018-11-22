@@ -17,29 +17,22 @@ const styles = theme => ({
 class MetrobankForm extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      ...JSON.parse(localStorage.getItem('user'))
-    }
-    localStorage.removeItem('data')
+    localStorage.setItem('data', null)
   }
 
   handleSubmit = e => {
     e.preventDefault()
-    console.log(this.props.route)
-    request({
-      url: this.props.route,
-      body: {
-        data: localStorage.getItem('data'),
-        userId : this.state._id
-      },
-      token: this.state.tokens[0].token
-    }).then((res, error) => {
-      console.log(res);
-      localStorage.removeItem('data')
-    }).catch(e => {
-      console.log(e)
-      localStorage.removeItem('data')
-    })
+    const { bank, user, postTransactions } = this.props
+    const data = localStorage.getItem('data')
+    const payload = {
+      bank,
+      data,
+      user
+    }
+    debugger
+    if (data) {
+      postTransactions(payload)
+    }
  }
 
   handleFile = e => {
@@ -51,15 +44,14 @@ class MetrobankForm extends React.Component {
     fr.readAsText(e.target.files[0])
   }
 
-  handleDownload = e => {
-  }
-
   render() {
     const { classes, template } = this.props
     return (
       <div className={classes.root}>
         <Typography variant="body1">
           Download the template below, fill-out the details. -- Make sure that the data are correct! :) Then click upload. That's it!
+          <br /><br />
+          <em>NOTE: Duplicate Reference No. or Application Number will be skipped in the upload.</em>
         </Typography>
         <FormControl>
           <InputLabel>Upload File</InputLabel>

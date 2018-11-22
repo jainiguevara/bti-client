@@ -1,5 +1,7 @@
 import moment from 'moment'
 
-export const isLoggedIn = ({ exp }) => {
-  return exp !== 0 && exp > moment().unix()
+export const isLoggedIn = state => { 
+  const { exp, tokens } = state.user
+  const isLoggedIn = tokens.length !== 0 && exp > moment().unix()
+  return isLoggedIn
 }

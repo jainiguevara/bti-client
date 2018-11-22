@@ -1,16 +1,37 @@
-import { FETCH_TRANSACTIONS, FETCH_TRANSACTIONS_FAILED } from './../actions/transactions'
+import * as actions from './../actions/transactions'
 
-const initialState = { }
+const {
+  FETCH_TRANSACTIONS_SUCCESS,
+  FETCH_TRANSACTIONS_FAILED,
+  POST_TRANSACTIONS_FAILED,
+  POST_TRANSACTIONS_SUCCESS,
+} = actions
+
+
+const initialState = {
+  data: [],
+  error: {},
+ }
 
 export default (state = initialState, action) => {
-  const {payload, error } = action
+  const { res, error } = action
   switch (action.type) {
-    case FETCH_TRANSACTIONS:
+    case FETCH_TRANSACTIONS_SUCCESS:
       return {
         ...state,
-        payload,
+        data: res,
       }
     case FETCH_TRANSACTIONS_FAILED:
+      return {
+        ...state,
+        error,
+      }
+    case POST_TRANSACTIONS_SUCCESS:
+      return {
+        ...state,
+        data: res
+      }
+    case POST_TRANSACTIONS_FAILED:
       return {
         ...state,
         error,

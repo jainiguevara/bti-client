@@ -16,8 +16,6 @@ import { ExpandLess, ExpandMore, MonetizationOn, Folder } from '@material-ui/ico
 import history from './../../history'
 import { metrobank, chinabank } from './../../statics/bank-data'
 import { logoutUser } from './../../actions/user'
-import { isLoggedIn } from './../../selectors/user'
-
 
 const styles = theme => ({
   root: {
@@ -48,7 +46,12 @@ class Header extends React.Component {
     anchorEl: null,
     openMetrobank: false,
     openChinabank: false,
-    ...JSON.parse(localStorage.getItem('user'))
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.user !== this.props.user) {
+      debugger
+    }
   }
 
   handleMenu = event => {
@@ -60,15 +63,10 @@ class Header extends React.Component {
   }
 
   handleLogout = () => {
-    console.log(this.state)
-    if (this.state.tokens[0].user) {
-      logoutUser({ 
-        token: this.state.tokens[0].user 
-      }, this.props.dispatch).then(() => {}).catch(() => {})
-    }
-    this.setState({ anchorEl: null, exp: 0 })
-    localStorage.removeItem('user')
-    history.push('/login')
+    const { user, logoutUser } = this.props
+    debugger
+    logoutUser(user.tokens[0])
+    this.setState({ anchorEl: null })
   }
 
   toggleDrawer = (side, open, route = undefined) => () => {
@@ -89,25 +87,21 @@ class Header extends React.Component {
   }
 
   render() {
-  const { classes, t, language } = this.props
-  const { auth, anchorEl } = this.state
-  const open = Boolean(anchorEl)
-
-  const sideList = (
-    <div className={classes.list}>
-      <List>
-        <ListItem button onClick={() => history.push('/')}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItem>
-      </List>
-    </div>
-  )
-  if (!isLoggedIn({ exp: this.state.exp })) {
-    return null
-  } else {
+    const { classes, t, language } = this.props
+    const { auth, anchorEl } = this.state
+    const open = Boolean(anchorEl)
+    const sideList = (
+      <div className={classes.list}>
+        <List>
+          <ListItem button onClick={() => history.push('/')}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+        </List>
+      </div>
+    )
     return (
       <AppBar position="static" color="default" className={classes.padBottom}>
         <Toolbar>
@@ -192,11 +186,9 @@ class Header extends React.Component {
               </List>
             </Collapse>
           </Drawer>
-
           <Typography variant="title" color="inherit" className={classes.flex}>
             BTI COURIER EXPRESS INC.
           </Typography>
-
           <div>
               <IconButton
                 aria-owns={open ? 'menu-appbar' : null}
@@ -229,11 +221,24 @@ class Header extends React.Component {
       </AppBar>
     )
   }
+}
+
+const mapStateToProps = state => {
+  return {
+    user : state.user
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logoutUser: token => {
+      dispatch(logoutUser(token))
+    }
   }
 }
 
 export default compose(
-  connect(),
+  connect(mapStateToProps, mapDispatchToProps),
   withStyles(styles), 
   // translate()
 )(Header)
