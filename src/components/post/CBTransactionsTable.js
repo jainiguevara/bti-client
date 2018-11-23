@@ -144,12 +144,14 @@ class CBTransactionsTable extends React.Component {
   }
 
   componentDidUpdate (prevProps) {
-    if (prevProps.transactions.data.length !== this.props.transactions.data.length ||
-      prevProps.query !== this.props.query
-      ) {
-      debugger
-      const { user, bank, query } = this.props
-      this.props.fetchTransactions(user.tokens, bank, query)
+    if (prevProps.transactions.data || prevProps.query) {
+      if (prevProps.transactions.data.length !== this.props.transactions.data.length ||
+        prevProps.query !== this.props.query
+        ) {
+        debugger
+        const { user, bank, query } = this.props
+        this.props.fetchTransactions(user.tokens, bank, query)
+      }
     }
   }
 

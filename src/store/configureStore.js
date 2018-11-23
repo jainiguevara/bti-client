@@ -23,9 +23,9 @@ const configureStore = initialState => {
 
   middlewares.push(thunk)
   enhancers.push(applyMiddleware(...middlewares))
-  if (process.env.REACT_APP_DEV === 1 || process.env.REACT_APP_DEV) {
-    enhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-  }
+  // if (process.env.REACT_APP_DEV === 1 || process.env.REACT_APP_DEV) {
+  //   enhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+  // }
   const enhancer = compose(...enhancers)
 
   const newStore = createStore(persistedReducer, initialState, enhancer)
