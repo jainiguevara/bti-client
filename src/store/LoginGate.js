@@ -6,13 +6,12 @@ import Login from './../containers/Login'
 import { isLoggedIn } from './../selectors/user'
 
 const LoginGate = props => {
-  const { isLoggedIn, logoutUser, user: { tokens }, children } = props
-  debugger
+  const { isLoggedIn, logoutUser, user: { exp, tokens }, children } = props
   if (isLoggedIn) {
     return children
   } else {
-    if (tokens.length !== 0) {
-      logoutUser(tokens)
+    if (exp !== 0) {
+      logoutUser(tokens[0])
     }
     return <Login />
   }

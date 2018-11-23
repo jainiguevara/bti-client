@@ -30,19 +30,23 @@ export const submitLogin = ({ email, password }) => async (dispatch, getState) =
 }
 
 export const logoutUser = ({ token }) => async (dispatch, getState) => {
+  debugger
   dispatch({ type: LOGOUT_REQUESTED })
     return request({
-      method: 'DELETE', 
       url: 'user/me/token',
       token
     }).then((res, error) => {
       if (error) {
         throw new Error(error)
       }
-      dispatch({ type: LOGOUT_SUCCESS, user: res })
+      dispatch({ type: LOGOUT_SUCCESS })
       return res
     }).catch(error => {
-      dispatch({ type: LOGOUT_FAILED, error })
+      if (error.details.name === 'TokenExpiredError') {
+        dispatch({ type: LOGOUT_SUCCESS })
+      } else {
+        dispatch({ type: LOGOUT_FAILED, error })
+      }
   })
 }
 

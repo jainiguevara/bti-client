@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
     case FETCH_USER_SUCCESS:
       return  Object.assign({}, state, user)
     case FETCH_USER_FAILED:
-      return Object.assign({}, state, user)
+      return Object.assign({}, state, error)
     default:
       return state
   }

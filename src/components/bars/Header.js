@@ -50,7 +50,6 @@ class Header extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.user !== this.props.user) {
-      debugger
     }
   }
 
@@ -64,7 +63,6 @@ class Header extends React.Component {
 
   handleLogout = () => {
     const { user, logoutUser } = this.props
-    debugger
     logoutUser(user.tokens[0])
     this.setState({ anchorEl: null })
   }
